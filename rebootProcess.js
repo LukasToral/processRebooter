@@ -52,7 +52,9 @@ const argv = yargs
                     });
 
                     console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments);
-                }
+                } else {
+		    console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments);
+		}
             })
         });
     });
