@@ -50,12 +50,17 @@ const argv = yargs
                         let processPID = process.pid
                         exec(`pwdx ${processPID}`, (err, stdout, stderr) => {
                             if (err) {
-                                //some err occurred
                                 console.error(err)
                             } else {
-                                // the *entire* stdout and stderr (buffered)
-                                console.log(`stdout: ${stdout}`);
-                                console.log(`stderr: ${stderr}`);
+                                if (stderr) console.log(stderr)
+                                let path = stdout.split(": ")[1]
+                                exec(`node ${path}/${argv.name}`, (err, stdout, stderr) => {
+                                    if (err) {
+                                        console.error(err)
+                                    } else {
+                                        if (stderr) console.log(stderr)
+                                    }
+                                });
                             }
                         });
                     }
