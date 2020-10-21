@@ -36,7 +36,7 @@ const argv = yargs
 
             resultList.forEach(function (process) {
                 if (process) {
-                    if (process.arguments[0] == argv.name) {
+                    if (process.arguments[0].indexOf(argv.name) !== -1) {
                         console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments)
                         let processPID = process.pid
                         exec(`pwdx ${processPID}`, (err, stdout, stderr) => {
