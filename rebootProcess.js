@@ -46,6 +46,18 @@ const argv = yargs
                         console.log("---Caution---")
                         console.log("There is more than one process started by the script name you have entered. Please enter PID of the process you would like to reboot:")
                         let processPID = parseInt(readline())
+                    } else if (length === 1) {
+                        let processPID = process.pid
+                        exec(`pwdx ${processPID}`, (err, stdout, stderr) => {
+                            if (err) {
+                                //some err occurred
+                                console.error(err)
+                            } else {
+                                // the *entire* stdout and stderr (buffered)
+                                console.log(`stdout: ${stdout}`);
+                                console.log(`stderr: ${stderr}`);
+                            }
+                        });
                     }
                 }
             });
