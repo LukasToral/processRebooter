@@ -1,0 +1,29 @@
+{
+  "name": "terminalapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rebootProcess.js",
+  "dependencies": {
+    "ps-node": "^0.1.6",
+    "yargs": "^16.0.4-candidate.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LukasToral/rebootProcess.git"
+  },
+  "keywords": [
+    "terminal",
+    "process",
+    "nodejs"
+  ],
+  "author": "Lukáš Toral",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LukasToral/rebootProcess/issues"
+  },
+  "homepage": "https://github.com/LukasToral/rebootProcess#readme"
+}
