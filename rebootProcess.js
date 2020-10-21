@@ -45,7 +45,7 @@ const argv = yargs
                             } else {
                                 if (stderr) console.log(stderr)
                                 let path = stdout.split(": ")[1]
-
+                                console.log("path:", path)
                                 exec(`kill -9 ${processPID}`, (err, stdout, stderr) => {
                                     if (err) {
                                         console.error(err)
