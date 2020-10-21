@@ -26,38 +26,20 @@ const argv = yargs
 
     ps.lookup({
         command: 'node',
-        psargs: 'ux'
+        arguments: '--debug',
     }, function (err, resultList) {
         if (err) {
             throw new Error(err);
         }
 
         resultList.forEach(function (process) {
+            if (process) {
 
-            process.arguments.forEach((arg) => {
-                if (arg.indexOf(argv.name) !== -1) {
-                    let pid = process.pid
-
-                    let command = `pwdx ${pid}`
-                    exec(command, (error, stdout, stderr) => {
-                        if (error) {
-                            console.log(`error: ${error.message}`);
-                            return;
-                        }
-                        if (stderr) {
-                            console.log(`stderr: ${stderr}`);
-                            return;
-                        }
-                        console.log(`stdout: ${stdout}`);
-                    });
-
-                    console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments);
-                } else {
-		    console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments);
-		}
-            })
+                console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments);
+            }
         });
     });
+
 /* if (argv._.includes('lyr')) {
     const year = argv.year || new Date().getFullYear();
     if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
