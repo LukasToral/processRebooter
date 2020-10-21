@@ -25,54 +25,56 @@ const argv = yargs
     .alias('help', 'h')
     .argv;
 
+    
+    function startScript (scriptName) {
+        let command = `nohup node ${scriptName} &`
 
-    if (argv._.includes('rbp')) {
         ps.lookup({
-            command: 'node'
-        }, function (err, resultList) {
-            if (err) {
-                throw new Error(err);
-            }
-
-            resultList.forEach(function (process) {
-                if (process) {
-                    if (process.arguments[0].indexOf(argv.name) !== -1) {
-                        console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments)
-                        let processPID = process.pid
-                        exec(`pwdx ${processPID}`, (err, stdout, stderr) => {
-                            if (err) {
-                                console.error(err)
-                            } else {
-                                if (stderr) console.log(stderr)
-                                let path = stdout.split(": ")[1]
-                                console.log("path:", path)
-                                exec(`kill -9 ${processPID}`, (err, stdout, stderr) => {
-                                    if (err) {
-                                        console.error(err)
-                                    } else {
-                                        if (stderr) console.log(stderr)
-                                        console.log("Process shuted down.")
-                                    }
-                                });
-
-                                let command = `nohup node ${path.trim()}/${argv.name} &`
-                                exec(command, (err, stdout, stderr) => {
-                                    if (err) {
-                                        console.error(err)
-                                    } else {
-                                        if (stderr) console.log(stderr)
-                                        console.log("Process started again.")
-                                    }
-                                });
-                            }
-                        });    
-                    } else {
-                        console.log('PID: %s, COMMAND: %s, ARGUMENTS: %s', process.pid, process.command, process.arguments)
-                    }
-                    
+            command: 'node',
+            arguments: `${scriptName}`,
+        },
+            function (err, resultList) {
+                if (err) {
+                    throw new Error(err);
+                }
+                // check if the same process already running:
+                if (resultList.length > 1) {
+                    console.log('This script is already running.');
+                    // Get the PID of running script
+                    exec(`pgrep - f 'node ./${scriptName}'`, (err, stdout, stderr) => {
+                        if (err) {
+                            console.error(err)
+                        } else {
+                            if (stderr) console.log(stderr)
+                            console.log("process is running", stdout)
+                            let scriptPID = stdout
+                        }
+                    });
+                }
+                else {
+                    let command = `nohup node ${scriptName} &`
+                    exec(command, (err, stdout, stderr) => {
+                        if (err) {
+                            console.error(err)
+                        } else {
+                            if (stderr) console.log(stderr)
+                            exec(`pgrep - f 'node ./${scriptName}'`, (err, stdout, stderr) => {
+                                if (err) {
+                                    console.error(err)
+                                } else {
+                                    if (stderr) console.log(stderr)
+                                    console.log("process is running", stdout)
+                                    let scriptPID = stdout
+                                }
+                            });
+                        }
+                    });
                 }
             });
-        });
+    }
+
+    if (argv._.includes('rbp')) {
+        startScript(argv.name)
     }
     
 /* if (argv._.includes('lyr')) {
