@@ -55,7 +55,7 @@ const argv = yargs
                                     }
                                 });
 
-                                let command = `node ${path.trim()}/${argv.name}`
+                                let command = `nohup node ${path.trim()}/${argv.name} &`
                                 exec(command, (err, stdout, stderr) => {
                                     if (err) {
                                         console.error(err)
