@@ -54,12 +54,23 @@ const argv = yargs
                             } else {
                                 if (stderr) console.log(stderr)
                                 let path = stdout.split(": ")[1]
+                                
+                                exec(`kill -9 ${processPID}`, (err, stdout, stderr) => {
+                                    if (err) {
+                                        console.error(err)
+                                    } else {
+                                        if (stderr) console.log(stderr)
+                                        console.log("Process shuted down.")
+                                    }
+                                });
+
                                 let command = `node ${path.trim()}/${argv.name}`
                                 exec(command, (err, stdout, stderr) => {
                                     if (err) {
                                         console.error(err)
                                     } else {
                                         if (stderr) console.log(stderr)
+                                        console.log("Process started again.")
                                     }
                                 });
                             }
