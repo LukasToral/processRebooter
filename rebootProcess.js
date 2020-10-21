@@ -25,8 +25,7 @@ const argv = yargs
     .argv;
 
     ps.lookup({
-        command: 'node',
-        arguments: '--debug',
+        command: 'node'
     }, function (err, resultList) {
         if (err) {
             throw new Error(err);
@@ -39,7 +38,6 @@ const argv = yargs
             }
         });
     });
-
 /* if (argv._.includes('lyr')) {
     const year = argv.year || new Date().getFullYear();
     if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
