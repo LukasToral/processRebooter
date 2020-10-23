@@ -58,7 +58,7 @@ const argv = yargs
     }
 
     function stopScript (scriptPID) {
-        exec(`kill -9 ${scriptPID}`, (err, stdout, stderr) => {
+        exec(`kill -2 ${scriptPID}`, (err, stdout, stderr) => {
             if (err) {
                 console.error(err)
             } else {
@@ -68,11 +68,12 @@ const argv = yargs
     }
 
     function startScript (scriptName) {
-        exec(`nohup node ${scriptPID} &`, (err, stdout, stderr) => {
+        exec(`node ${scriptName}`, (err, stdout, stderr) => {
             if (err) {
                 console.error(err)
             } else {
                 if (stderr) console.log(stderr)
+		if (stdout) console.log(stdout)
             }
         });
     }
