@@ -40,13 +40,13 @@ const argv = yargs
                 // check if the same process already running:
                 if (resultList.length > 1) {
                     // Get the PID of running script
-                    exec(`pgrep - f 'node ./${scriptName}'`, (err, stdout, stderr) => {
+                    exec(`pgrep -f '${scriptName}'`, (err, stdout, stderr) => {
                         if (err) {
                             console.error(err)
                         } else {
                             if (stderr) console.log(stderr)
                             console.log("process is running", stdout)
-                            let scriptPID = stdout
+                            let scriptPID = parseInt(stdout)
                             stopScript(scriptPID)
                         }
                     });
