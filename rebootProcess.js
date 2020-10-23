@@ -45,9 +45,9 @@ const argv = yargs
                             console.error(err)
                         } else {
                             if (stderr) console.log(stderr)
-                            console.log("process is running", stdout)
                             let scriptPID = parseInt(stdout)
                             stopScript(scriptPID)
+                            startScript(scriptName)
                         }
                     });
                 }
@@ -63,13 +63,23 @@ const argv = yargs
                 console.error(err)
             } else {
                 if (stderr) console.log(stderr)
-                console.log("Script stopped")
+            }
+        });
+    }
+
+    function startScript (scriptName) {
+        exec(`nohup node ${scriptPID} &`, (err, stdout, stderr) => {
+            if (err) {
+                console.error(err)
+            } else {
+                if (stderr) console.log(stderr)
             }
         });
     }
 
     if (argv._.includes('rbp')) {
         checkScript(argv.name)
+        console.log("Script restarted.")
     }
     
 /* if (argv._.includes('lyr')) {
