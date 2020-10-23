@@ -26,7 +26,7 @@ const argv = yargs
     .argv;
 
     
-    function startScript (scriptName) {
+    function checkScript (scriptName) {
         let command = `nohup node ${scriptName} &`
 
         ps.lookup({
@@ -39,7 +39,6 @@ const argv = yargs
                 }
                 // check if the same process already running:
                 if (resultList.length > 1) {
-                    console.log('This script is already running.');
                     // Get the PID of running script
                     exec(`pgrep - f 'node ./${scriptName}'`, (err, stdout, stderr) => {
                         if (err) {
@@ -48,33 +47,29 @@ const argv = yargs
                             if (stderr) console.log(stderr)
                             console.log("process is running", stdout)
                             let scriptPID = stdout
+                            stopScript(scriptPID)
                         }
                     });
                 }
                 else {
-                    let command = `nohup node ${scriptName} &`
-                    exec(command, (err, stdout, stderr) => {
-                        if (err) {
-                            console.error(err)
-                        } else {
-                            if (stderr) console.log(stderr)
-                            exec(`pgrep - f 'node ./${scriptName}'`, (err, stdout, stderr) => {
-                                if (err) {
-                                    console.error(err)
-                                } else {
-                                    if (stderr) console.log(stderr)
-                                    console.log("process is running", stdout)
-                                    let scriptPID = stdout
-                                }
-                            });
-                        }
-                    });
+                    // Oznamit, ze proces musi nejprve bezet pred spustenim rebooteru
                 }
             });
     }
 
+    function stopScript (scriptPID) {
+        exec(`kill -9 ${scriptPID}`, (err, stdout, stderr) => {
+            if (err) {
+                console.error(err)
+            } else {
+                if (stderr) console.log(stderr)
+                console.log("Script stopped")
+            }
+        });
+    }
+
     if (argv._.includes('rbp')) {
-        startScript(argv.name)
+        checkScript(argv.name)
     }
     
 /* if (argv._.includes('lyr')) {
